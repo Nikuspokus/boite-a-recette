@@ -5,7 +5,7 @@ class Admin extends Component {
     render() {
         return (
             <div className="cards">
-            <AjouterRecette ajouterRecette={this.props.AjouterRecette}/>
+            <AjouterRecette ajouterRecette={this.props.ajouterRecette}/>
             <footer>
                 <button onClick={this.props.chargerExemple}>Remplir</button>
             </footer>
