@@ -7,11 +7,28 @@ import Admin from "./components/Admin";
 import Card from "./components/Card";
 import recettes from "./recettes";
 
+//firebase
+import base from "./base"
+
 class App extends Component {
   state = {
     pseudo: this.props.match.params.pseudo,
     recettes: {},
   };
+
+  componentDidMount () {
+    this.ref = base.syncState(`/${this.state.pseudo}/recettes`,{
+      context: this,
+      state: 'recettes'
+    })
+  }
+
+  // Permet de ne pas écraser les informations qui 
+  // ne nous appartiennent pas lors de la sortie 
+  // et de la sauvegarde de sa page
+  componentWillUnmount () {
+    base.removeBinding(this.ref)
+  }
 
   chargerExemple = () => this.setState({ recettes });
 
