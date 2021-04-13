@@ -8,7 +8,7 @@ import Card from "./components/Card";
 import recettes from "./recettes";
 
 //firebase
-import base from "./base"
+import base from "./base";
 
 class App extends Component {
   state = {
@@ -17,25 +17,31 @@ class App extends Component {
   };
 
   // permet de connecter et de synchroniser la base de données avec notre application
-  componentDidMount () {
-    this.ref = base.syncState(`/${this.state.pseudo}/recettes`,{
+  componentDidMount() {
+    this.ref = base.syncState(`/${this.state.pseudo}/recettes`, {
       context: this,
-      state: 'recettes'
-    })
+      state: "recettes",
+    });
   }
 
-  // Permet de ne pas écraser les informations qui 
-  // ne nous appartiennent pas lors de la sortie 
+  // Permet de ne pas écraser les informations qui
+  // ne nous appartiennent pas lors de la sortie
   // et de la sauvegarde de sa page
-  componentWillUnmount () {
-    base.removeBinding(this.ref)
+  componentWillUnmount() {
+    base.removeBinding(this.ref);
   }
 
-  ajouterRecette = recette => {
-    const recettes = { ...this.state.recettes }
-    recettes[`recette-${Date.now()}`] = recette
-    this.setState({ recettes })
-  }
+  ajouterRecette = (recette) => {
+    const recettes = { ...this.state.recettes };
+    recettes[`recette-${Date.now()}`] = recette;
+    this.setState({ recettes });
+  };
+
+  majRecette = (key, newRecette) => {
+    const recettes = { ...this.state.recettes };
+    recettes[key] = newRecette;
+    this.setState({ recettes });
+  };
 
   chargerExemple = () => this.setState({ recettes });
 
@@ -48,9 +54,12 @@ class App extends Component {
       <div className="box">
         <Header pseudo={this.state.pseudo} />
         <div className="cards">{cards}</div>
-        <Admin 
-        ajouterRecette={this.ajouterRecette}
-        chargerExemple={this.chargerExemple} />
+        <Admin
+          recettes={this.state.recettes}
+          ajouterRecette={this.ajouterRecette}
+          majRecette={this.majRecette}
+          chargerExemple={this.chargerExemple}
+        />
       </div>
     );
   }
